@@ -1,32 +1,35 @@
 #include "monty.h"
-/**
- * _add - adds the top two elements of the stack.
- * @stack: head
- * @num_line: number of line
- */
-void _add(stack_t **stack, unsigned int num_line)
-{
-	stack_t *temp1;
-	stack_t *temp2;
-	int sum = 0;
 
-	if (*stack && (*stack)->next)
+/**
+ * _add - add top of stack y second top stack
+ * @stack: pointer to lists for monty stack
+ * @line_number: number of line opcode occurs on
+ */
+
+void _add(stack_t **stack, unsigned int line_number)
+{
+	stack_t *tmp = *stack;
+	int sum = 0, i = 0;
+
+	if (tmp == NULL)
 	{
-		temp2 = (*stack)->next;
-		sum = (*stack)->n + temp2->n;
-		temp1 = *stack;
-		*stack = (*stack)->next;
-		if (*stack)
-			(*stack)->prev = NULL;
-		free(temp1);
-		(*stack)->n = sum;
-	}
-	else
-	{
-		dprintf (2, "L%d: can't add, stack too short\n", num_line);
-		free(global.line);
-		fclose(global.fil);
-		free_l(stack);
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
+
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+
+	if (stack == NULL || (*stack)->next == NULL || i <= 1)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	sum = (*stack)->next->n + (*stack)->n;
+	_pop(stack, line_number);
+
+	(*stack)->n = sum;
 }
