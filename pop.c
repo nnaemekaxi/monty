@@ -1,29 +1,22 @@
 #include "monty.h"
 
 /**
- * _pop - removes the top element of the stack
- * @stack: head
- * @num_line: number line
+ * _pop - remove element a list
+ *@stack: pointer to first node
+ *@line_number: integer
+ *Return: void
  */
-void _pop(stack_t **stack, unsigned int num_line)
+void _pop(stack_t **stack, unsigned int line_number)
 {
-	stack_t *temp;
+	stack_t *nodo = *stack;
 
-	temp = *stack;
-	if (temp == NULL)
+	if (stack == NULL || *stack == NULL)
 	{
-		dprintf (2, "L%d: can't pop an empty stack\n", num_line);
-		free(global.line);
-		fclose(global.fil);
-		free_l(stack);
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	if ((*stack)->next)
-	{
-		*stack = temp->next;
+	*stack = nodo->next;
+	if (*stack != NULL)
 		(*stack)->prev = NULL;
-		free(temp);
-	}
-	else
-		free_l(stack);
+	free(nodo);
 }
